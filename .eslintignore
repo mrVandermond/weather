@@ -2,4 +2,4 @@
 jest.conf.js
 test/mocks
 test/coverage
-webpack.conf.js
+webpack.config.js

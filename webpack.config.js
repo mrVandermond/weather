@@ -29,7 +29,7 @@ module.exports = {
         loader: 'esbuild-loader',
         options: {
           loader: 'ts',
-        }
+        },
       },
       {
         test: /\.vue$/,
@@ -43,8 +43,9 @@ module.exports = {
           'sass-loader',
         ],
       },
-    ]
-  },  devtool: 'source-map',
+    ],
+  },
+  devtool: 'source-map',
   devServer: {
     hot: true,
     host: '0.0.0.0',
@@ -75,19 +76,19 @@ module.exports = {
     allowedHosts: 'all',
   },
   plugins: [
-    new webpack.DefinePlugin({
-      __VUE_OPTIONS_API__: JSON.stringify(true),
-      __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
-    }),
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
       inject: true,
     }),
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: JSON.stringify(true),
+      __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
+    }),
     new EslintWebpackPlugin({
       extensions: ['ts', 'vue'],
       files: [path.join(__dirname, 'src')],
     }),
-  ]
-}
+  ],
+};
