@@ -1,16 +1,30 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "NodeNext",
+    "baseUrl": ".",
+    "module": "esnext",
     "target": "es5",
-    "strict": true,
-    "isolatedModules": true,
     "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "preserveValueImports": true,
+    "importsNotUsedAsValues": "error",
     "lib": [
       "esnext",
       "dom",
       "dom.iterable"
-    ]
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "assets/*": [
+        "assets/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules"
