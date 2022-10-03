@@ -1,5 +1,30 @@
 {
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrVandermond/weather.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrVandermond/weather/issues"
+  },
+  "homepage": "https://github.com/mrVandermond/weather#readme",
   "devDependencies": {
+    "esbuild-loader": "^2.20.0",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.0.2",
+    "typescript": "^4.8.4",
+    "vue-loader": "^17.0.0",
     "webpack": "^5.74.0"
+  },
+  "dependencies": {
+    "pinia": "^2.0.22",
+    "vue": "^3.2.40",
+    "vue-router": "^4.1.5"
   }
 }
