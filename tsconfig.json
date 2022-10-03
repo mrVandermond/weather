@@ -3,9 +3,22 @@
     "module": "ESNext",
     "moduleResolution": "NodeNext",
     "target": "es5",
-    "sourceMap": true
+    "strict": true,
+    "isolatedModules": true,
+    "sourceMap": true,
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ]
   },
   "exclude": [
     "node_modules"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "types/*.ts",
+    "test/**/*.ts"
   ]
 }
