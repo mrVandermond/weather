@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "webpack serve --progress --config webpack.config.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mrVandermond/weather.git"
@@ -15,12 +17,17 @@
   },
   "homepage": "https://github.com/mrVandermond/weather#readme",
   "devDependencies": {
+    "css-loader": "^6.7.1",
     "esbuild-loader": "^2.20.0",
+    "html-webpack-plugin": "^5.5.0",
     "sass": "^1.55.0",
     "sass-loader": "^13.0.2",
     "typescript": "^4.8.4",
     "vue-loader": "^17.0.0",
-    "webpack": "^5.74.0"
+    "vue-style-loader": "^4.1.3",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
     "pinia": "^2.0.22",
