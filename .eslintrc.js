@@ -35,6 +35,7 @@ module.exports = {
     }
   ],
   rules: {
+    'no-void': 'off',
     'max-len': ['error', {
       code: 120,
       tabWidth: 2,
