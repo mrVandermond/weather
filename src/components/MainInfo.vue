@@ -13,7 +13,7 @@
     </div>
 
     <div class="main-info__range-temp">
-      H:{{ props.currentWeather.main.temp_max }}&ordm; L:{{ props.currentWeather.main.temp_min }}&ordm;
+      H:{{ roundedMaxTemp }}&ordm; L:{{ roundedMinTemp }}&ordm;
     </div>
   </div>
 </template>
@@ -22,16 +22,20 @@
 import type { ICurrentWeather } from '@/api';
 
 import { defineProps, computed } from 'vue';
+import { useFilters } from '@/composables';
 
 const props = defineProps<{
   currentWeather: ICurrentWeather;
 }>();
+const filters = useFilters();
 
 const roundedTemp = computed(() => Math.round(props.currentWeather.main.temp));
+const roundedMaxTemp = computed(() => Math.round(props.currentWeather.main.temp_max));
+const roundedMinTemp = computed(() => Math.round(props.currentWeather.main.temp_min));
 const description = computed(() => {
   if (!props.currentWeather.weather.length) return '';
 
-  return props.currentWeather.weather[0].description;
+  return filters.capitalize(props.currentWeather.weather[0].description);
 });
 </script>
 
