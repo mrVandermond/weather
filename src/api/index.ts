@@ -1,6 +1,6 @@
 import * as utl from './utils';
 
-interface ICurrentWeather {
+export interface ICurrentWeather {
   name: string;
   dt: number;
   wind: {
