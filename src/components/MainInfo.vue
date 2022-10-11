@@ -24,6 +24,10 @@
       >
     </div>
   </div>
+
+  <SliderDialog
+    class="slider-dialog"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -31,6 +35,8 @@ import type { ICurrentWeather } from '@/api';
 
 import { computed } from 'vue';
 import { useFilters } from '@/composables';
+
+import SliderDialog from '@/components/SliderDialog.vue';
 
 const props = defineProps<{
   currentWeather: ICurrentWeather;
@@ -50,10 +56,9 @@ const description = computed(() => {
 <style lang="scss" scoped>
 .main-info {
   height: 100%;
-  padding-top: 20%;
-  padding-bottom: 10%;
-  display: flex;
-  flex-direction: column;
+  padding-top: 150px;
+  padding-bottom: 50px;
+  user-select: none;
 
   &__location-name {
     font-size: 72px;
@@ -88,5 +93,13 @@ const description = computed(() => {
   &__house-img {
     width: 100%;
   }
+}
+
+.slider-dialog {
+  width: 100%;
+  height: 560px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 </style>

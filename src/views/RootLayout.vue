@@ -40,8 +40,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .main-frame {
-  width: 100vw;
-  height: 100vh;
+  overflow: hidden;
 }
 .main-frame-img {
   position: absolute;
