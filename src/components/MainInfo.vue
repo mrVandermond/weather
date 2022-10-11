@@ -15,13 +15,21 @@
     <div class="main-info__range-temp">
       H:{{ roundedMaxTemp }}&ordm; L:{{ roundedMinTemp }}&ordm;
     </div>
+
+    <div class="main-info__house-wrapper">
+      <img
+        class="main-info__house-img"
+        src="/assets/house.svg"
+        alt="house"
+      >
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { ICurrentWeather } from '@/api';
 
-import { defineProps, computed } from 'vue';
+import { computed } from 'vue';
 import { useFilters } from '@/composables';
 
 const props = defineProps<{
@@ -41,16 +49,20 @@ const description = computed(() => {
 
 <style lang="scss" scoped>
 .main-info {
-  padding-top: 100px;
+  height: 100%;
+  padding-top: 20%;
+  padding-bottom: 10%;
+  display: flex;
+  flex-direction: column;
 
   &__location-name {
-    font-size: 56px;
+    font-size: 72px;
     text-align: center;
   }
 
   &__temp {
     margin-top: 12px;
-    font-size: 140px;
+    font-size: 200px;
     text-align: center;
     font-weight: 300;
   }
@@ -67,6 +79,14 @@ const description = computed(() => {
     text-align: center;
     font-weight: 600;
     font-size: 45px;
+  }
+
+  &__house-wrapper {
+    margin-top: 100px;
+  }
+
+  &__house-img {
+    width: 100%;
   }
 }
 </style>

@@ -4,6 +4,12 @@
       v-if="currentWeather"
       :current-weather="currentWeather"
     />
+
+    <img
+      class="main-frame-img"
+      src="assets/main_frame.svg"
+      alt="main-frame"
+    >
   </div>
 </template>
 
@@ -36,7 +42,13 @@ onMounted(() => {
 .main-frame {
   width: 100vw;
   height: 100vh;
-  background: url('assets/main_frame.svg') no-repeat;
-  background-size: cover;
+}
+.main-frame-img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 </style>
