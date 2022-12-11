@@ -21,7 +21,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { getHourlyForecastWeather } from '@/api';
 
 interface ITab {
   name: string;
@@ -39,7 +40,23 @@ const tabs: ITab[] = [
   },
 ];
 
+const props = defineProps<{
+  latitude: number;
+  longitude: number;
+}>();
 const activeTab = ref(tabs[0].value);
+
+async function fetchHourlyForecast(lat: number, lon: number): Promise<void> {
+  try {
+    await getHourlyForecastWeather(lat, lon);
+  } catch (error) {
+    // TODO: Сделать отображение алерта
+  }
+}
+
+onMounted(async () => {
+  await fetchHourlyForecast(props.latitude, props.longitude);
+});
 
 const onClickTab = (tab: ITab): void => {
   if (tab.value === activeTab.value) return;
@@ -55,6 +72,7 @@ const onClickTab = (tab: ITab): void => {
   background-color: rgba(#2E335A,74%);
   box-shadow: inset 0 1px 0 #FFFFFF;
   backdrop-filter: blur(25px);
+  width: 100%;
 }
 
 .slider-header {
@@ -65,9 +83,9 @@ const onClickTab = (tab: ITab): void => {
   &__pin {
     position: absolute;
     top: 15px;
-    left: calc(50% - 60px);
-    height: 15px;
-    width: 120px;
+    left: calc(50% - 25px);
+    height: 8px;
+    width: 50px;
     background-color: rgba(#000, 40%);
     border-radius: 10px;
   }
@@ -80,13 +98,13 @@ const onClickTab = (tab: ITab): void => {
 
   &__tab {
     font-weight: 600;
-    font-size: 45px;
+    font-size: 1rem;
     color: rgba(#EBEBF5, 60%);
     user-select: none;
   }
 
   &__active {
-    border-bottom: 5px solid #5936B4;
+    border-bottom: 2px solid #5936B4;
   }
 }
 </style>

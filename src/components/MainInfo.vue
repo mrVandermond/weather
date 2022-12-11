@@ -1,5 +1,10 @@
 <template>
-  <div class="main-info">
+  <div
+    :style="{
+      height: height + 'px'
+    }"
+    class="main-info"
+  >
     <div class="main-info__location-name">
       {{ props.currentWeather.name }}
     </div>
@@ -24,24 +29,20 @@
       >
     </div>
   </div>
-
-  <SliderDialog
-    class="slider-dialog"
-  />
 </template>
 
 <script lang="ts" setup>
 import type { ICurrentWeather } from '@/api';
 
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useFilters } from '@/composables';
-
-import SliderDialog from '@/components/SliderDialog.vue';
 
 const props = defineProps<{
   currentWeather: ICurrentWeather;
 }>();
 const filters = useFilters();
+
+const height = ref(0);
 
 const roundedTemp = computed(() => Math.round(props.currentWeather.main.temp));
 const roundedMaxTemp = computed(() => Math.round(props.currentWeather.main.temp_max));
@@ -51,31 +52,38 @@ const description = computed(() => {
 
   return filters.capitalize(props.currentWeather.weather[0].description);
 });
+
+onMounted(() => {
+  height.value = window.innerHeight;
+});
 </script>
 
 <style lang="scss" scoped>
 .main-info {
-  height: 100%;
+  position: relative;
   padding-top: 150px;
   padding-bottom: 50px;
   user-select: none;
+  z-index: 0;
 
   &__location-name {
-    font-size: 72px;
+    font-size: 2rem;
     text-align: center;
+    line-height: 2rem;
   }
 
   &__temp {
-    margin-top: 12px;
-    font-size: 200px;
+    margin-top: 0.75rem;
+    font-size: 3rem;
     text-align: center;
     font-weight: 300;
+    line-height: 3rem;
   }
 
   &__description {
     font-weight: 600;
-    font-size: 45px;
-    margin-top: 12px;
+    font-size: 1.5rem;
+    margin-top: 0.75rem;
     color: rgba(#EBEBF5, 60%);
     text-align: center;
   }
@@ -83,23 +91,21 @@ const description = computed(() => {
   &__range-temp {
     text-align: center;
     font-weight: 600;
-    font-size: 45px;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
   }
 
   &__house-wrapper {
+    position: absolute;
+    bottom: -16px;
+    left: 0;
     margin-top: 100px;
+    z-index: -1;
+    width: 100%;
   }
 
   &__house-img {
     width: 100%;
   }
-}
-
-.slider-dialog {
-  width: 100%;
-  height: 560px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
 }
 </style>
