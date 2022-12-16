@@ -34,7 +34,7 @@
 <script lang="ts" setup>
 import type { ICurrentWeather } from '@/api';
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useFilters } from '@/composables';
 
 const props = defineProps<{
@@ -53,8 +53,17 @@ const description = computed(() => {
   return filters.capitalize(props.currentWeather.weather[0].description);
 });
 
+const onResize = (): void => {
+  height.value = window.innerHeight;
+};
+
 onMounted(() => {
   height.value = window.innerHeight;
+  window.addEventListener('resize', onResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', onResize);
 });
 </script>
 
