@@ -79,9 +79,6 @@ onMounted(async () => {
 .slider-dialog {
   position: absolute;
   max-width: 425px;
-  max-height: 560px;
-  height: 66px;
-  bottom: 0;
   left: 0;
 }
 </style>

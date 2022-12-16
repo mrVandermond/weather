@@ -1,6 +1,18 @@
 <template>
-  <div class="slider-modal">
-    <div class="slider-header">
+  <div
+    ref="modal"
+    :style="{
+      transform: transformSlider,
+    }"
+    :class="{
+      'slider-modal__transition': !isDragModal,
+    }"
+    class="slider-modal"
+  >
+    <div
+      ref="modalHeader"
+      class="slider-header"
+    >
       <div class="slider-header__pin" />
 
       <div class="slider-tabs">
@@ -21,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { getHourlyForecastWeather } from '@/api';
 
 interface ITab {
@@ -44,7 +56,18 @@ const props = defineProps<{
   latitude: number;
   longitude: number;
 }>();
+
 const activeTab = ref(tabs[0].value);
+const transformY = ref(0);
+const isDragModal = ref(false);
+const modal = ref<HTMLDivElement | null>(null);
+const modalHeader = ref<HTMLDivElement | null>(null);
+const touchCoordY = ref<number | null>(null);
+const touchCoordYStart = ref<number | null>(null);
+const heightModalHeader = ref(0);
+const heightModal = ref(0);
+
+const transformSlider = computed(() => `translateY(${transformY.value}px)`);
 
 async function fetchHourlyForecast(lat: number, lon: number): Promise<void> {
   try {
@@ -54,7 +77,55 @@ async function fetchHourlyForecast(lat: number, lon: number): Promise<void> {
   }
 }
 
+const onTouchStart = (event: TouchEvent): void => {
+  isDragModal.value = true;
+  touchCoordY.value = Math.round(event.touches[0].screenY);
+  touchCoordYStart.value = Math.round(event.touches[0].screenY);
+};
+const onTouchMove = (event: TouchEvent): void => {
+  if (touchCoordY.value === null || !isDragModal.value) return;
+
+  const delta = event.touches[0].screenY - touchCoordY.value;
+
+  if (transformY.value + delta >= -heightModalHeader.value) return;
+
+  if (transformY.value + delta <= -heightModal.value) return;
+
+  transformY.value += Math.round(delta);
+  touchCoordY.value = event.touches[0].screenY;
+};
+const onTouchEnd = (): void => {
+  isDragModal.value = false;
+
+  if (touchCoordYStart.value === null || touchCoordY.value === null) return;
+
+  const delta = touchCoordYStart.value - touchCoordY.value;
+
+  if (delta < -50 && delta < 0) {
+    transformY.value = -heightModalHeader.value;
+
+    return;
+  }
+
+  if (delta > 50 && delta > 0) {
+    transformY.value = -heightModal.value;
+  }
+};
+
 onMounted(async () => {
+  if (modal.value) {
+    modal.value.addEventListener('touchstart', onTouchStart);
+    modal.value.addEventListener('touchmove', onTouchMove);
+    modal.value.addEventListener('touchend', onTouchEnd);
+
+    if (modalHeader.value) {
+      heightModalHeader.value = parseFloat(getComputedStyle(modalHeader.value).height);
+      heightModal.value = parseFloat(getComputedStyle(modal.value).height);
+
+      transformY.value = -heightModalHeader.value;
+    }
+  }
+
   await fetchHourlyForecast(props.latitude, props.longitude);
 });
 
@@ -73,6 +144,11 @@ const onClickTab = (tab: ITab): void => {
   box-shadow: inset 0 1px 0 #FFFFFF;
   backdrop-filter: blur(25px);
   width: 100%;
+  height: 260px;
+
+  &__transition {
+    transition: transform 0.2s ease;
+  }
 }
 
 .slider-header {
