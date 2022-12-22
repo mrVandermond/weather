@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
-import { getHourlyForecastWeather } from '@/api';
+import { getHourlyForecastWeather, IHourlyForecast } from '@/api';
 
 interface ITab {
   name: string;
@@ -58,12 +58,17 @@ const props = defineProps<{
 }>();
 
 const activeTab = ref(tabs[0].value);
-const transformY = ref(0);
+const hourlyForecast = ref<IHourlyForecast | null>(null);
+
 const isDragModal = ref(false);
+
 const modal = ref<HTMLDivElement | null>(null);
 const modalHeader = ref<HTMLDivElement | null>(null);
+
 const touchCoordY = ref<number | null>(null);
 const touchCoordYStart = ref<number | null>(null);
+const transformY = ref(0);
+
 const heightModalHeader = ref(0);
 const heightModal = ref(0);
 
@@ -71,7 +76,7 @@ const transformSlider = computed(() => `translateY(${transformY.value}px)`);
 
 async function fetchHourlyForecast(lat: number, lon: number): Promise<void> {
   try {
-    await getHourlyForecastWeather(lat, lon);
+    hourlyForecast.value = await getHourlyForecastWeather(lat, lon);
   } catch (error) {
     // TODO: Сделать отображение алерта
   }

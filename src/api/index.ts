@@ -26,6 +26,20 @@ interface IHourlyForecastItem {
   main: IMainInfoWeather;
 }
 
+interface ICity {
+  id: number;
+  name: string;
+  country: string;
+  population: number;
+  sunrise: number;
+  sunset: number;
+  timezone: number;
+  coord: {
+    lan: number;
+    lat: number;
+  };
+}
+
 export interface ICurrentWeather {
   name: string;
   dt: number;
@@ -37,6 +51,7 @@ export interface ICurrentWeather {
 export interface IHourlyForecast {
   cnt: number;
   list: IHourlyForecastItem[];
+  city: ICity;
 }
 
 export async function getWeather(lat: number, lon: number): Promise<ICurrentWeather> {
@@ -51,7 +66,7 @@ export async function getWeather(lat: number, lon: number): Promise<ICurrentWeat
 }
 
 export async function getHourlyForecastWeather(lat: number, lon: number, cnt = 12): Promise<IHourlyForecast> {
-  const response = await fetch(utl.getURLForForecast('/data/2.5/forecast/hourly/', {
+  const response = await fetch(utl.getURLForWeather('/data/2.5/forecast/', {
     lat,
     lon,
     cnt,

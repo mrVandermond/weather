@@ -21,4 +21,3 @@ export function getURL(base: string): TGetUrlInternal {
 }
 
 export const getURLForWeather = getURL('https://api.openweathermap.org');
-export const getURLForForecast = getURL('https://pro.openweathermap.org');
