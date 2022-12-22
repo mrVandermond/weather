@@ -107,8 +107,20 @@ const onTouchEnd = (): void => {
     return;
   }
 
+  if (delta >= -50 && delta < 0) {
+    transformY.value = -heightModal.value;
+
+    return;
+  }
+
   if (delta > 50 && delta > 0) {
     transformY.value = -heightModal.value;
+
+    return;
+  }
+
+  if (delta <= 50 && delta > 0) {
+    transformY.value = -heightModalHeader.value;
   }
 };
 
