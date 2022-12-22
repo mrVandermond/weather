@@ -29,12 +29,23 @@
         </div>
       </div>
     </div>
+
+    <transition
+      :name="directionOfTransition"
+      mode="out-in"
+    >
+      <component
+        :is="currentTabComponent"
+      />
+    </transition>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
 import { getHourlyForecastWeather, IHourlyForecast } from '@/api';
+import HourlyForecast from '@/components/Tabs/HourlyForecast.vue';
+import WeeklyForecast from '@/components/Tabs/WeeklyForecast.vue';
 
 interface ITab {
   name: string;
@@ -61,6 +72,7 @@ const activeTab = ref(tabs[0].value);
 const hourlyForecast = ref<IHourlyForecast | null>(null);
 
 const isDragModal = ref(false);
+const isBodyModalVisible = ref(false);
 
 const modal = ref<HTMLDivElement | null>(null);
 const modalHeader = ref<HTMLDivElement | null>(null);
@@ -73,6 +85,20 @@ const heightModalHeader = ref(0);
 const heightModal = ref(0);
 
 const transformSlider = computed(() => `translateY(${transformY.value}px)`);
+const currentTabComponent = computed(() => {
+  if (activeTab.value === 0) return HourlyForecast;
+
+  if (activeTab.value === 1) return WeeklyForecast;
+
+  return '';
+});
+const directionOfTransition = computed(() => {
+  if (activeTab.value === 0) return 'right';
+
+  if (activeTab.value === 1) return 'left';
+
+  return '';
+});
 
 async function fetchHourlyForecast(lat: number, lon: number): Promise<void> {
   try {
@@ -108,6 +134,7 @@ const onTouchEnd = (): void => {
 
   if (delta < -50 && delta < 0) {
     transformY.value = -heightModalHeader.value;
+    isBodyModalVisible.value = false;
 
     return;
   }
@@ -120,6 +147,7 @@ const onTouchEnd = (): void => {
 
   if (delta > 50 && delta > 0) {
     transformY.value = -heightModal.value;
+    isBodyModalVisible.value = true;
 
     return;
   }
@@ -199,5 +227,20 @@ const onClickTab = (tab: ITab): void => {
   &__active {
     border-bottom: 2px solid #5936B4;
   }
+}
+
+.right-enter-from,
+.left-leave-to {
+  transform: translateX(-100vw);
+}
+.right-enter-active,
+.left-leave-active,
+.right-leave-active,
+.left-enter-active {
+  transition: transform 0.3s ease;
+}
+.right-leave-to,
+.left-enter-from {
+  transform: translateX(100vw);
 }
 </style>
