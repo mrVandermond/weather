@@ -6,7 +6,7 @@
     class="main-info"
   >
     <div class="main-info__location-name">
-      {{ props.currentWeather.location.name }}
+      {{ props.locationName }}
     </div>
 
     <div class="main-info__temp">
@@ -32,22 +32,22 @@
 </template>
 
 <script lang="ts" setup>
-import type { ICurrentWeather } from '@/api/types';
-
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useFilters } from '@/composables';
+import type { ICurrent } from '@/api/types';
 
 const props = defineProps<{
-  currentWeather: ICurrentWeather;
+  currentWeather: ICurrent;
+  locationName: string;
 }>();
 const filters = useFilters();
 
 const height = ref(0);
 
-const roundedTemp = computed(() => Math.round(props.currentWeather.current.temp_c));
-const roundedMaxTemp = computed(() => Math.round(props.currentWeather.current.temp_c)); // TODO: Сделать макс температуру
-const roundedMinTemp = computed(() => Math.round(props.currentWeather.current.temp_c)); // TODO: Сделать мин температуру
-const description = computed(() => filters.capitalize(props.currentWeather.current.condition.text));
+const roundedTemp = computed(() => Math.round(props.currentWeather.temp_c));
+const roundedMaxTemp = computed(() => Math.round(props.currentWeather.temp_c)); // TODO: Сделать макс температуру
+const roundedMinTemp = computed(() => Math.round(props.currentWeather.temp_c)); // TODO: Сделать мин температуру
+const description = computed(() => filters.capitalize(props.currentWeather.condition.text));
 
 const onResize = (): void => {
   height.value = window.innerHeight;

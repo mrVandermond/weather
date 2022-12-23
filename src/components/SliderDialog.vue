@@ -49,8 +49,8 @@
 import { ref, onMounted, computed, watchEffect } from 'vue';
 import HourlyForecast from '@/components/Tabs/HourlyForecast.vue';
 import WeeklyForecast from '@/components/Tabs/WeeklyForecast.vue';
-import { getHourlyForecastWeather } from '@/api';
-import type { IForecastDay, IForecastHour, IHourlyForecast } from '@/api/types';
+import { fetchForecastWeather } from '@/api';
+import type { IForecastDay, IForecastHour, IForecastWeather } from '@/api/types';
 
 interface ITab {
   name: string;
@@ -88,7 +88,7 @@ const transformY = ref(0);
 const heightModalHeader = ref(0);
 const heightModal = ref(0);
 
-const forecastData = ref<IHourlyForecast | null>(null);
+const forecastData = ref<IForecastWeather | null>(null);
 
 const transformSlider = computed(() => `translateY(${transformY.value}px)`);
 const currentTabComponent = computed(() => {
@@ -118,7 +118,7 @@ const weeklyForecast = computed<IForecastDay[]>(() => {
 
 const fetchForecast = async (): Promise<void> => {
   try {
-    forecastData.value = await getHourlyForecastWeather(props.latitude, props.longitude);
+    forecastData.value = await fetchForecastWeather(props.latitude, props.longitude);
   } catch {
     // TODO
   }

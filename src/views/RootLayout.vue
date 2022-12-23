@@ -1,12 +1,13 @@
 <template>
   <div class="main-frame">
     <MainInfo
-      v-if="currentWeather && !hasErrorWhenGetLocation"
+      v-if="forecastData && !hasErrorWhenGetLocation"
       :current-weather="currentWeather"
+      :location-name="locationName"
     />
 
     <SliderDialog
-      v-if="currentWeather && !hasErrorWhenGetLocation"
+      v-if="forecastData && !hasErrorWhenGetLocation"
       :latitude="position?.coords.latitude"
       :longitude="position?.coords.longitude"
       class="slider-dialog"
@@ -25,23 +26,34 @@
 </template>
 
 <script lang="ts" setup>
-import type { ICurrentWeather } from '@/api';
+import type { ICurrent, IForecastWeather } from '@/api/types';
 
-import { ref, onMounted } from 'vue';
-import { getWeather } from '@/api';
+import { ref, onMounted, computed } from 'vue';
 import { getGeolocation } from '@/composables/geolocation';
 
 import MainInfo from '@/components/MainInfo.vue';
 import ErrorGeolocation from '@/components/ErrorGeolocation.vue';
 import SliderDialog from '@/components/SliderDialog.vue';
+import { fetchForecastWeather } from '@/api';
 
-const currentWeather = ref<ICurrentWeather>();
+const forecastData = ref<IForecastWeather | null>(null);
 const position = ref<GeolocationPosition>();
 const hasErrorWhenGetLocation = ref(false);
 
+const currentWeather = computed<ICurrent | null>(() => {
+  if (!forecastData.value) return null;
+
+  return forecastData.value.current;
+});
+const locationName = computed(() => {
+  if (!forecastData.value) return '';
+
+  return forecastData.value.location.name;
+});
+
 async function fetchWeather(lat: number, lon: number): Promise<void> {
   try {
-    currentWeather.value = await getWeather(lat, lon);
+    forecastData.value = await fetchForecastWeather(lat, lon);
   } catch (error) {
     // console.error(error); // TODO: Сделать отображение алерта
   }

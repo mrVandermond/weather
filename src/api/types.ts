@@ -14,7 +14,7 @@ interface ILocation {
   localtime: string;
 }
 
-interface ICurrent {
+export interface ICurrent {
   temp_c: number;
   feelslike_c: number;
   condition: ICondition;
@@ -75,12 +75,7 @@ interface IForecast {
   date_epoch: number;
 }
 
-export interface ICurrentWeather {
-  location: ILocation;
-  current: ICurrent;
-}
-
-export interface IHourlyForecast {
+export interface IForecastWeather {
   location: ILocation;
   current: ICurrent;
   forecast: {
