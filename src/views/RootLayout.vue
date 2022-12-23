@@ -2,8 +2,10 @@
   <div class="main-frame">
     <MainInfo
       v-if="forecastData && !hasErrorWhenGetLocation"
-      :current-weather="currentWeather"
-      :location-name="locationName"
+      :current-weather="mainInfo?.currentWeather"
+      :location-name="mainInfo?.locationName"
+      :max-temp="mainInfo?.maxTemp"
+      :min-temp="mainInfo?.minTemp"
     />
 
     <SliderDialog
@@ -36,19 +38,26 @@ import ErrorGeolocation from '@/components/ErrorGeolocation.vue';
 import SliderDialog from '@/components/SliderDialog.vue';
 import { fetchForecastWeather } from '@/api';
 
+interface IMainInfo {
+  currentWeather: ICurrent;
+  locationName: string;
+  maxTemp: number;
+  minTemp: number;
+}
+
 const forecastData = ref<IForecastWeather | null>(null);
 const position = ref<GeolocationPosition>();
 const hasErrorWhenGetLocation = ref(false);
 
-const currentWeather = computed<ICurrent | null>(() => {
+const mainInfo = computed<IMainInfo | null>(() => {
   if (!forecastData.value) return null;
 
-  return forecastData.value.current;
-});
-const locationName = computed(() => {
-  if (!forecastData.value) return '';
-
-  return forecastData.value.location.name;
+  return {
+    currentWeather: forecastData.value.current,
+    locationName: forecastData.value.location.name,
+    maxTemp: forecastData.value.forecast.forecastday[0].day.maxtemp_c,
+    minTemp: forecastData.value.forecast.forecastday[0].day.mintemp_c,
+  };
 });
 
 async function fetchWeather(lat: number, lon: number): Promise<void> {

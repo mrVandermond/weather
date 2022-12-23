@@ -39,14 +39,16 @@ import type { ICurrent } from '@/api/types';
 const props = defineProps<{
   currentWeather: ICurrent;
   locationName: string;
+  maxTemp: number;
+  minTemp: number;
 }>();
 const filters = useFilters();
 
 const height = ref(0);
 
 const roundedTemp = computed(() => Math.round(props.currentWeather.temp_c));
-const roundedMaxTemp = computed(() => Math.round(props.currentWeather.temp_c)); // TODO: Сделать макс температуру
-const roundedMinTemp = computed(() => Math.round(props.currentWeather.temp_c)); // TODO: Сделать мин температуру
+const roundedMaxTemp = computed(() => Math.round(props.maxTemp));
+const roundedMinTemp = computed(() => Math.round(props.minTemp));
 const description = computed(() => filters.capitalize(props.currentWeather.condition.text));
 
 const onResize = (): void => {
