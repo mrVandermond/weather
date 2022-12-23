@@ -39,6 +39,7 @@ module.exports = {
     'max-len': ['error', {
       code: 120,
       tabWidth: 2,
+      ignoreComments: true,
     }],
     'import/prefer-default-export': 'off',
     'vue/multi-word-component-names': 'off',
