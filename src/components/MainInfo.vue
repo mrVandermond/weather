@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ICurrentWeather } from '@/api';
+import type { ICurrentWeather } from '@/api/types';
 
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useFilters } from '@/composables';

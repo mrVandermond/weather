@@ -49,7 +49,8 @@
 import { ref, onMounted, computed, watchEffect } from 'vue';
 import HourlyForecast from '@/components/Tabs/HourlyForecast.vue';
 import WeeklyForecast from '@/components/Tabs/WeeklyForecast.vue';
-import { getHourlyForecastWeather, IForecastDay, IForecastHour, IHourlyForecast } from '@/api';
+import { getHourlyForecastWeather } from '@/api';
+import type { IForecastDay, IForecastHour, IHourlyForecast } from '@/api/types';
 
 interface ITab {
   name: string;

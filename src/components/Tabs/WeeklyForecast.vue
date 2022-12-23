@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { IForecastDay } from '@/api';
 import { computed } from 'vue';
+import type { IForecastDay } from '@/api/types';
 
 const props = defineProps<{
   weeklyForecast: IForecastDay[];

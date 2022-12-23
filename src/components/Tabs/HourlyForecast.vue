@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { IForecastHour } from '@/api';
 import { computed } from 'vue';
+import type { IForecastHour } from '@/api/types';
 
 const props = defineProps<{
   hourlyForecast: IForecastHour[];
