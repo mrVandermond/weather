@@ -1,4 +1,4 @@
-export const API_KEY = '97c941415da39d17960131bb8086c4b6';
+export const API_KEY = '715db0f15901498e982173411222212';
 
 type TGetUrlInternal = (url: string, params?: { [key: string]: unknown }) => string;
 
@@ -6,7 +6,7 @@ export function getURL(base: string): TGetUrlInternal {
   return (url, params) => {
     const urlPresentation = new URL(url, base);
 
-    urlPresentation.searchParams.append('appid', API_KEY);
+    urlPresentation.searchParams.append('key', API_KEY);
 
     if (!params) {
       return urlPresentation.toString();
@@ -20,4 +20,4 @@ export function getURL(base: string): TGetUrlInternal {
   };
 }
 
-export const getURLForWeather = getURL('https://api.openweathermap.org');
+export const getURLForWeather = getURL('https://api.weatherapi.com');

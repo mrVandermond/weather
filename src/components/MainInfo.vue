@@ -6,7 +6,7 @@
     class="main-info"
   >
     <div class="main-info__location-name">
-      {{ props.currentWeather.name }}
+      {{ props.currentWeather.location.name }}
     </div>
 
     <div class="main-info__temp">
@@ -44,14 +44,10 @@ const filters = useFilters();
 
 const height = ref(0);
 
-const roundedTemp = computed(() => Math.round(props.currentWeather.main.temp));
-const roundedMaxTemp = computed(() => Math.round(props.currentWeather.main.temp_max));
-const roundedMinTemp = computed(() => Math.round(props.currentWeather.main.temp_min));
-const description = computed(() => {
-  if (!props.currentWeather.weather.length) return '';
-
-  return filters.capitalize(props.currentWeather.weather[0].description);
-});
+const roundedTemp = computed(() => Math.round(props.currentWeather.current.temp_c));
+const roundedMaxTemp = computed(() => Math.round(props.currentWeather.current.temp_c)); // TODO: Сделать макс температуру
+const roundedMinTemp = computed(() => Math.round(props.currentWeather.current.temp_c)); // TODO: Сделать мин температуру
+const description = computed(() => filters.capitalize(props.currentWeather.current.condition.text));
 
 const onResize = (): void => {
   height.value = window.innerHeight;

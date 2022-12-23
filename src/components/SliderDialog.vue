@@ -34,18 +34,22 @@
       :name="directionOfTransition"
       mode="out-in"
     >
-      <component
-        :is="currentTabComponent"
-      />
+      <keep-alive>
+        <component
+          :is="currentTabComponent"
+          :hourly-forecast="hourlyForecast"
+          :weekly-forecast="weeklyForecast"
+        />
+      </keep-alive>
     </transition>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
-import { getHourlyForecastWeather, IHourlyForecast } from '@/api';
+import { ref, onMounted, computed, watchEffect } from 'vue';
 import HourlyForecast from '@/components/Tabs/HourlyForecast.vue';
 import WeeklyForecast from '@/components/Tabs/WeeklyForecast.vue';
+import { getHourlyForecastWeather, IForecastDay, IForecastHour, IHourlyForecast } from '@/api';
 
 interface ITab {
   name: string;
@@ -69,10 +73,9 @@ const props = defineProps<{
 }>();
 
 const activeTab = ref(tabs[0].value);
-const hourlyForecast = ref<IHourlyForecast | null>(null);
 
 const isDragModal = ref(false);
-const isBodyModalVisible = ref(false);
+const isBodyTabVisible = ref(false);
 
 const modal = ref<HTMLDivElement | null>(null);
 const modalHeader = ref<HTMLDivElement | null>(null);
@@ -83,6 +86,8 @@ const transformY = ref(0);
 
 const heightModalHeader = ref(0);
 const heightModal = ref(0);
+
+const forecastData = ref<IHourlyForecast | null>(null);
 
 const transformSlider = computed(() => `translateY(${transformY.value}px)`);
 const currentTabComponent = computed(() => {
@@ -99,14 +104,30 @@ const directionOfTransition = computed(() => {
 
   return '';
 });
+const hourlyForecast = computed<IForecastHour[]>(() => {
+  if (!forecastData.value) return [];
 
-async function fetchHourlyForecast(lat: number, lon: number): Promise<void> {
+  return forecastData.value.forecast.forecastday[0].hour;
+});
+const weeklyForecast = computed<IForecastDay[]>(() => {
+  if (!forecastData.value) return [];
+
+  return forecastData.value.forecast.forecastday.map((item) => item.day);
+});
+
+const fetchForecast = async (): Promise<void> => {
   try {
-    hourlyForecast.value = await getHourlyForecastWeather(lat, lon);
-  } catch (error) {
-    // TODO: Сделать отображение алерта
+    forecastData.value = await getHourlyForecastWeather(props.latitude, props.longitude);
+  } catch {
+    // TODO
   }
-}
+};
+
+watchEffect(() => {
+  if (!isBodyTabVisible.value) return;
+
+  void fetchForecast();
+});
 
 const onTouchStart = (event: TouchEvent): void => {
   isDragModal.value = true;
@@ -134,7 +155,7 @@ const onTouchEnd = (): void => {
 
   if (delta < -50 && delta < 0) {
     transformY.value = -heightModalHeader.value;
-    isBodyModalVisible.value = false;
+    isBodyTabVisible.value = false;
 
     return;
   }
@@ -147,7 +168,7 @@ const onTouchEnd = (): void => {
 
   if (delta > 50 && delta > 0) {
     transformY.value = -heightModal.value;
-    isBodyModalVisible.value = true;
+    isBodyTabVisible.value = true;
 
     return;
   }
@@ -157,21 +178,19 @@ const onTouchEnd = (): void => {
   }
 };
 
-onMounted(async () => {
-  if (modal.value) {
-    modal.value.addEventListener('touchstart', onTouchStart);
-    modal.value.addEventListener('touchmove', onTouchMove);
-    modal.value.addEventListener('touchend', onTouchEnd);
+onMounted(() => {
+  if (!modal.value) return;
 
-    if (modalHeader.value) {
-      heightModalHeader.value = parseFloat(getComputedStyle(modalHeader.value).height);
-      heightModal.value = parseFloat(getComputedStyle(modal.value).height);
+  modal.value.addEventListener('touchstart', onTouchStart);
+  modal.value.addEventListener('touchmove', onTouchMove);
+  modal.value.addEventListener('touchend', onTouchEnd);
 
-      transformY.value = -heightModalHeader.value;
-    }
+  if (modalHeader.value) {
+    heightModalHeader.value = parseFloat(getComputedStyle(modalHeader.value).height);
+    heightModal.value = parseFloat(getComputedStyle(modal.value).height);
+
+    transformY.value = -heightModalHeader.value;
   }
-
-  await fetchHourlyForecast(props.latitude, props.longitude);
 });
 
 const onClickTab = (tab: ITab): void => {
