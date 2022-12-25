@@ -48,6 +48,10 @@ export interface IForecastDay {
   uv: number;
 }
 
+export interface IForecastDayWithDate extends IForecastDay {
+  date_epoch: number;
+}
+
 interface IForecastAstro {
   sunrise: string;
   sunset: string;

@@ -10,8 +10,7 @@
 
     <SliderDialog
       v-if="forecastData && !hasErrorWhenGetLocation"
-      :latitude="position?.coords.latitude"
-      :longitude="position?.coords.longitude"
+      :forecast-data="forecastData"
       class="slider-dialog"
     />
 

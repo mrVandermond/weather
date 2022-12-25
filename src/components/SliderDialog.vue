@@ -31,6 +31,7 @@
     </div>
 
     <transition
+      v-if="isBodyTabVisible"
       :name="directionOfTransition"
       mode="out-in"
     >
@@ -46,11 +47,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed, watchEffect } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import HourlyForecast from '@/components/Tabs/HourlyForecast.vue';
 import WeeklyForecast from '@/components/Tabs/WeeklyForecast.vue';
-import { fetchForecastWeather } from '@/api';
-import type { IForecastDay, IForecastHour, IForecastWeather } from '@/api/types';
+import type { IForecastDayWithDate, IForecastHour, IForecastWeather } from '@/api/types';
 
 interface ITab {
   name: string;
@@ -69,8 +69,7 @@ const tabs: ITab[] = [
 ];
 
 const props = defineProps<{
-  latitude: number;
-  longitude: number;
+  forecastData: IForecastWeather | null;
 }>();
 
 const activeTab = ref(tabs[0].value);
@@ -88,8 +87,6 @@ const transformY = ref(0);
 const heightModalHeader = ref(0);
 const heightModal = ref(0);
 
-const forecastData = ref<IForecastWeather | null>(null);
-
 const transformSlider = computed(() => `translateY(${transformY.value}px)`);
 const currentTabComponent = computed(() => {
   if (activeTab.value === 0) return HourlyForecast;
@@ -106,28 +103,17 @@ const directionOfTransition = computed(() => {
   return '';
 });
 const hourlyForecast = computed<IForecastHour[]>(() => {
-  if (!forecastData.value) return [];
+  if (!props.forecastData) return [];
 
-  return forecastData.value.forecast.forecastday[0].hour;
+  return props.forecastData.forecast.forecastday[0].hour;
 });
-const weeklyForecast = computed<IForecastDay[]>(() => {
-  if (!forecastData.value) return [];
+const weeklyForecast = computed<IForecastDayWithDate[]>(() => {
+  if (!props.forecastData) return [];
 
-  return forecastData.value.forecast.forecastday.map((item) => item.day);
-});
-
-const fetchForecast = async (): Promise<void> => {
-  try {
-    forecastData.value = await fetchForecastWeather(props.latitude, props.longitude);
-  } catch {
-    // TODO
-  }
-};
-
-watchEffect(() => {
-  if (!isBodyTabVisible.value) return;
-
-  void fetchForecast();
+  return props.forecastData.forecast.forecastday.map((item) => ({
+    ...item.day,
+    date_epoch: item.date_epoch,
+  }));
 });
 
 const onTouchStart = (event: TouchEvent): void => {
