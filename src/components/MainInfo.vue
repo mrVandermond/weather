@@ -74,22 +74,23 @@ onUnmounted(() => {
   z-index: 0;
 
   &__location-name {
-    font-size: 2rem;
+    font-size: 2.125rem;
     text-align: center;
-    line-height: 2rem;
+    line-height: 2.5rem;
   }
 
   &__temp {
     margin-top: 0.75rem;
-    font-size: 3rem;
+    font-size: 6rem;
     text-align: center;
-    font-weight: 300;
-    line-height: 3rem;
+    font-weight: 100;
+    line-height: 4.375rem;
   }
 
   &__description {
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1.5rem;
     margin-top: 0.75rem;
     color: rgba(#EBEBF5, 60%);
     text-align: center;
