@@ -5,7 +5,12 @@
     </div>
 
     <div class="forecast-item__condition">
-      {{ props.conditionCode }}
+      <img
+        :src="iconPath"
+        width="32"
+        height="32"
+        alt="weather condition icon"
+      >
     </div>
 
     <div class="forecast-item__temperature">
@@ -16,12 +21,22 @@
 
 <script lang="ts" setup>
 import type { IForecastItem } from '@/components/Forecast/types';
+import weatherConditions from '@/utils/weatherConditions.json';
+import { computed } from 'vue';
 
 const props = defineProps<{
   title: IForecastItem['title'];
   conditionCode: IForecastItem['conditionCode'];
   temperature: IForecastItem['temperature'];
 }>();
+
+const iconPath = computed(() => {
+  const iconName = weatherConditions.find((item) => item.code === props.conditionCode)?.icon;
+
+  if (!iconName) return '';
+
+  return `assets/icons/${iconName}.png`;
+});
 </script>
 
 <style lang="scss" scoped>
@@ -38,12 +53,12 @@ const props = defineProps<{
   width: 60px;
 
   &__title {
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: 600;
   }
 
   &__temperature {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 </style>

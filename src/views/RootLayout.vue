@@ -1,11 +1,11 @@
 <template>
   <div class="main-frame">
     <MainInfo
-      v-if="forecastData && !hasErrorWhenGetLocation"
-      :current-weather="mainInfo?.currentWeather"
-      :location-name="mainInfo?.locationName"
-      :max-temp="mainInfo?.maxTemp"
-      :min-temp="mainInfo?.minTemp"
+      v-if="!hasErrorWhenGetLocation && mainInfo"
+      :current-weather="mainInfo.currentWeather"
+      :location-name="mainInfo.locationName"
+      :max-temp="mainInfo.maxTemp"
+      :min-temp="mainInfo.minTemp"
     />
 
     <SliderDialog

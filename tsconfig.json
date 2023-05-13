@@ -12,6 +12,7 @@
     "jsx": "preserve",
     "preserveValueImports": true,
     "importsNotUsedAsValues": "error",
+    "resolveJsonModule": true,
     "lib": [
       "esnext",
       "dom",
@@ -32,6 +33,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.vue",
+    "src/**/*.json",
     "types/*.ts",
     "test/**/*.ts"
   ]

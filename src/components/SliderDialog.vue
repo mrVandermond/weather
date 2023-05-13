@@ -228,10 +228,12 @@ const onClickTab = (tab: ITab): void => {
     font-size: 1rem;
     color: rgba(#EBEBF5, 60%);
     user-select: none;
+    transition: color 300ms ease-in;
+    margin-bottom: 5px;
   }
 
   &__active {
-    border-bottom: 2px solid #5936B4;
+    color: lighten(#EBEBF5, 20);
   }
 }
 
