@@ -31,7 +31,7 @@
     </div>
 
     <transition
-      v-if="isBodyTabVisible && currentTabComponent"
+      v-if="isBodyTabVisible"
       :name="directionOfTransition"
       mode="out-in"
     >
@@ -166,18 +166,16 @@ const onTouchEnd = (): void => {
 };
 
 onMounted(() => {
-  if (!modal.value) return;
+  if (!modalHeader.value || !modal.value) return;
 
-  modal.value.addEventListener('touchstart', onTouchStart);
-  modal.value.addEventListener('touchmove', onTouchMove);
-  modal.value.addEventListener('touchend', onTouchEnd);
+  modalHeader.value.addEventListener('touchstart', onTouchStart);
+  modalHeader.value.addEventListener('touchmove', onTouchMove);
+  modalHeader.value.addEventListener('touchend', onTouchEnd);
 
-  if (modalHeader.value) {
-    heightModalHeader.value = parseFloat(getComputedStyle(modalHeader.value).height);
-    heightModal.value = parseFloat(getComputedStyle(modal.value).height);
+  heightModalHeader.value = parseFloat(getComputedStyle(modalHeader.value).height);
+  heightModal.value = parseFloat(getComputedStyle(modal.value).height);
 
-    transformY.value = -heightModalHeader.value;
-  }
+  transformY.value = -heightModalHeader.value;
 });
 
 const onClickTab = (tab: ITab): void => {

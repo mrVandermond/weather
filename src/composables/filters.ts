@@ -14,13 +14,13 @@ function hoursWithLeadingZero(timestamp: number): string {
 
 function dayOfWeek(timestamp: number): string {
   const dayOfWeekArr = [
-    'Sun',
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
+    'Вс',
+    'Пн',
+    'Вт',
+    'Ср',
+    'Чт',
+    'Пт',
+    'Сб',
   ];
 
   return dayOfWeekArr[new Date(timestamp).getDay()];

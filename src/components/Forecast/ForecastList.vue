@@ -3,9 +3,7 @@
     <ForecastItem
       v-for="item in props.list"
       :key="item.title"
-      :title="item.title"
-      :condition-code="item.conditionCode"
-      :temperature="item.temperature"
+      v-bind="item"
     />
   </div>
 </template>

@@ -1,5 +1,10 @@
 <template>
-  <div class="forecast-item">
+  <div
+    :class="{
+      'forecast-item_current': props.isCurrent,
+    }"
+    class="forecast-item"
+  >
     <div class="forecast-item__title">
       {{ props.title }}
     </div>
@@ -28,6 +33,7 @@ const props = defineProps<{
   title: IForecastItem['title'];
   conditionCode: IForecastItem['conditionCode'];
   temperature: IForecastItem['temperature'];
+  isCurrent: IForecastItem['isCurrent'];
 }>();
 
 const iconPath = computed(() => {
@@ -49,7 +55,7 @@ const iconPath = computed(() => {
   box-shadow: 5px 4px 10px rgba(#000, 0.25), inset 1px 1px 0 rgba(#fff, 0.25);
   border: 1px solid rgba(#fff, 0.2);
   border-radius: 30px;
-  background: rgba(#48319D, 0.2);
+  background-color: rgba(#48319D, 0.2);
   width: 60px;
 
   &__title {
@@ -59,6 +65,10 @@ const iconPath = computed(() => {
 
   &__temperature {
     font-size: 1.25rem;
+  }
+
+  &_current {
+    background-color: #48319D;
   }
 }
 </style>
