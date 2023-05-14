@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, shallowRef } from 'vue';
 import HourlyForecast from '@/components/Tabs/HourlyForecast.vue';
 import WeeklyForecast from '@/components/Tabs/WeeklyForecast.vue';
 import type { IForecastDayWithDate, IForecastHour, IForecastWeather } from '@/api/types';
@@ -77,8 +77,8 @@ const activeTab = ref(tabs[0].value);
 const isDragModal = ref(false);
 const isBodyTabVisible = ref(false);
 
-const modal = ref<HTMLDivElement | null>(null);
-const modalHeader = ref<HTMLDivElement | null>(null);
+const modal = shallowRef<HTMLDivElement | null>(null);
+const modalHeader = shallowRef<HTMLDivElement | null>(null);
 
 const touchCoordY = ref<number | null>(null);
 const touchCoordYStart = ref<number | null>(null);
