@@ -23,9 +23,3 @@ const forecastList = computed<IForecastItem[]>(() => props.hourlyForecast.map((i
   temperature: Math.round(item.temp_c),
 })));
 </script>
-
-<script lang="ts">
-export default {
-  name: 'HourlyForecast',
-};
-</script>

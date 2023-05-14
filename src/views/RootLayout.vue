@@ -19,7 +19,7 @@
     />
 
     <img
-      class="main-frame-img"
+      class="main-frame__img"
       src="assets/main_frame.png"
       alt="main-frame"
     >
@@ -86,14 +86,15 @@ onMounted(async () => {
   overflow: hidden;
   max-width: 425px;
   margin: auto;
-}
-.main-frame-img {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+
+  &__img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
 }
 
 .slider-dialog {

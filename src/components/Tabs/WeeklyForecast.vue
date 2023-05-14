@@ -22,9 +22,3 @@ const forecastList = computed<IForecastItem[]>(() => props.weeklyForecast.map((i
   temperature: Math.round(item.avgtemp_c),
 })));
 </script>
-
-<script lang="ts">
-export default {
-  name: 'WeeklyForecast',
-};
-</script>

@@ -31,7 +31,7 @@
     </div>
 
     <transition
-      v-if="isBodyTabVisible"
+      v-if="isBodyTabVisible && currentTabComponent"
       :name="directionOfTransition"
       mode="out-in"
     >
@@ -93,7 +93,7 @@ const currentTabComponent = computed(() => {
 
   if (activeTab.value === 1) return WeeklyForecast;
 
-  return '';
+  return null;
 });
 const directionOfTransition = computed(() => {
   if (activeTab.value === 0) return 'right';
@@ -191,8 +191,8 @@ const onClickTab = (tab: ITab): void => {
 .slider-modal {
   overflow: hidden;
   border-radius: 44px 44px 0 0;
-  background-color: rgba(#2E335A,74%);
-  box-shadow: inset 0 1px 0 #FFFFFF;
+  background: linear-gradient(167deg, rgba(46, 51, 90, 0.7) -4%, rgba(28, 27, 51, 0.7) 95%);
+  box-shadow: inset 0 1px 0 rgb(80, 74, 181);
   backdrop-filter: blur(25px);
   width: 100%;
   height: 260px;
@@ -205,7 +205,6 @@ const onClickTab = (tab: ITab): void => {
 .slider-header {
   padding-top: 44px;
   border-bottom: 1px solid rgba(#FFF, 30%);
-  box-shadow: 0 1px 0 rgba(#000, 20%);
 
   &__pin {
     position: absolute;
