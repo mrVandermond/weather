@@ -1,5 +1,13 @@
 <template>
-  <div class="main-frame">
+  <div
+    :style="{
+      height: height + 'px',
+    }"
+    :class="{
+      'main-frame_error': hasErrorWhenGetLocation,
+    }"
+    class="main-frame"
+  >
     <MainInfo
       v-if="!hasErrorWhenGetLocation && mainInfo"
       :current-weather="mainInfo.currentWeather"
@@ -16,6 +24,7 @@
 
     <ErrorGeolocation
       v-if="hasErrorWhenGetLocation"
+      @receive-geolocation="handleReceiveGeolocation"
     />
 
     <img
@@ -29,7 +38,7 @@
 <script lang="ts" setup>
 import type { ICurrent, IForecastWeather } from '@/api/types';
 
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { getGeolocation } from '@/composables/geolocation';
 
 import MainInfo from '@/components/MainInfo.vue';
@@ -47,6 +56,7 @@ interface IMainInfo {
 const forecastData = ref<IForecastWeather | null>(null);
 const position = ref<GeolocationPosition>();
 const hasErrorWhenGetLocation = ref(false);
+const height = ref(0);
 
 const mainInfo = computed<IMainInfo | null>(() => {
   if (!forecastData.value) return null;
@@ -67,16 +77,32 @@ async function fetchWeather(lat: number, lon: number): Promise<void> {
   }
 }
 
-onMounted(async () => {
+const onResize = (): void => {
+  height.value = window.innerHeight;
+};
+
+async function handleReceiveGeolocation(): Promise<void> {
+  hasErrorWhenGetLocation.value = false;
+
   try {
     position.value = await getGeolocation();
-
     await fetchWeather(position.value.coords.latitude, position.value.coords.longitude);
   } catch (error) {
     if (error instanceof GeolocationPositionError) {
       hasErrorWhenGetLocation.value = true;
     }
   }
+}
+
+onMounted(async () => {
+  height.value = window.innerHeight;
+  window.addEventListener('resize', onResize);
+
+  await handleReceiveGeolocation();
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', onResize);
 });
 </script>
 
@@ -86,6 +112,11 @@ onMounted(async () => {
   overflow: hidden;
   max-width: 425px;
   margin: auto;
+
+  &_error {
+    display: flex;
+    align-items: center;
+  }
 
   &__img {
     position: absolute;

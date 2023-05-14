@@ -1,10 +1,5 @@
 <template>
-  <div
-    :style="{
-      height: height + 'px'
-    }"
-    class="main-info"
-  >
+  <div class="main-info">
     <div class="main-info__location-name">
       {{ props.locationName }}
     </div>
@@ -32,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed } from 'vue';
 import { useFilters } from '@/composables';
 import type { ICurrent } from '@/api/types';
 
@@ -44,25 +39,10 @@ const props = defineProps<{
 }>();
 const filters = useFilters();
 
-const height = ref(0);
-
 const roundedTemp = computed(() => Math.round(props.currentWeather.temp_c));
 const roundedMaxTemp = computed(() => Math.round(props.maxTemp));
 const roundedMinTemp = computed(() => Math.round(props.minTemp));
 const description = computed(() => filters.capitalize(props.currentWeather.condition.text));
-
-const onResize = (): void => {
-  height.value = window.innerHeight;
-};
-
-onMounted(() => {
-  height.value = window.innerHeight;
-  window.addEventListener('resize', onResize);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize);
-});
 </script>
 
 <style lang="scss" scoped>
@@ -72,6 +52,7 @@ onUnmounted(() => {
   padding-bottom: 50px;
   user-select: none;
   z-index: 0;
+  height: inherit;
 
   &__location-name {
     font-size: 2.125rem;
