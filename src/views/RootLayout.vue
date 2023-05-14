@@ -20,7 +20,7 @@
 
     <img
       class="main-frame-img"
-      src="assets/main_frame.svg"
+      src="assets/main_frame.png"
       alt="main-frame"
     >
   </div>

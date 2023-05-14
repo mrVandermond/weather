@@ -33,7 +33,7 @@ export interface ICurrent {
 
 interface ICondition {
   text: string;
-  code: number; // TODO: Узнать какие конкретные значения тут могут быть и сделать enum
+  code: number;
 }
 
 export interface IForecastDay {

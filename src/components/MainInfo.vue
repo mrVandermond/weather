@@ -24,7 +24,7 @@
     <div class="main-info__house-wrapper">
       <img
         class="main-info__house-img"
-        src="/assets/house.svg"
+        src="/assets/house.png"
         alt="house"
       >
     </div>
